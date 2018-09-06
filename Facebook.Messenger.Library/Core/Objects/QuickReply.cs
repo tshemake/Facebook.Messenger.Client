@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Facebook.Messenger.Client.Core.Objects
+namespace Facebook.Messenger.Library.Core.Objects
 {
     public class QuickReply
     {

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется следующим образом
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных с этой сборкой.
-[assembly: AssemblyTitle("Facebook.Messenger.Client")]
+[assembly: AssemblyTitle("Facebook.Messenger.Client.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Facebook.Messenger.Client")]
+[assembly: AssemblyProduct("Facebook.Messenger.Client.Tests")]
 [assembly: AssemblyCopyright("© , 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для ID библиотеки типов typelib, если этот проект видим для COM
-[assembly: Guid("c3397f16-4388-4448-8487-268973386ec6")]
+[assembly: Guid("438fc603-58e4-4a73-b7a4-e796fd718688")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
