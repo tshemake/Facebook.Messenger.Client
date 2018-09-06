@@ -41,12 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Objects\Attachment.cs" />
-    <Compile Include="Core\Objects\AttachmentType.cs" />
     <Compile Include="Core\Objects\Message.cs" />
+    <Compile Include="Core\Objects\Messaging.cs" />
     <Compile Include="Core\Objects\QuickReply.cs" />
     <Compile Include="Core\Objects\Recipient.cs" />
     <Compile Include="Core\Objects\Sender.cs" />
+    <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />
+    <Compile Include="Core\WebhookEvents\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

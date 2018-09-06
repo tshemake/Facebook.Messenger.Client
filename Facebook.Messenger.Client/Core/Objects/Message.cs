@@ -11,5 +11,6 @@ namespace Facebook.Messenger.Client.Core.Objects
         public string Mid { get; set; }
         public string Text { get; set; }
         public QuickReply QuickReply { get; set; }
+        public int? Seq { get; set; } = null;
     }
 }
