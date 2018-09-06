@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Facebook.Messenger.Client", "Facebook.Messenger.Client\Facebook.Messenger.Client.shproj", "{154D7772-FE8A-46E2-852F-FD626D5BF848}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Facebook.Messenger.Client\Facebook.Messenger.Client.projitems*{154d7772-fe8a-46e2-852f-fd626d5bf848}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE372F33-29B5-45BC-A7E4-2DE9DAC0E835}
+	EndGlobalSection
+EndGlobal
