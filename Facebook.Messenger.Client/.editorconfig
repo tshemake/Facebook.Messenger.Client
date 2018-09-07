@@ -1,0 +1,31 @@
+# Rules in this file were initially inferred by Visual Studio IntelliCode from the C:\Users\root\source\repos\Facebook.Messenger.Client\Facebook.Messenger.Client\ codebase based on best match to current usage at 07.09.2018
+# You can modify the rules from these initially generated values to suit your own policies
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.cs]
+
+#Core editorconfig formatting - indentation
+
+#use soft tabs (spaces) for indentation
+indent_style = space
+
+#Formatting - new line options
+
+#require braces to be on a new line for types and methods (also known as "Allman" style)
+csharp_new_line_before_open_brace = types, methods
+
+#Formatting - organize using options
+
+#sort System.* using directives alphabetically, and place them before other usings
+dotnet_sort_system_directives_first = true
+
+#Formatting - spacing options
+
+#remove space between method call name and opening parenthesis
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+#do not place space characters after the opening parenthesis and before the closing parenthesis of a method call
+csharp_space_between_method_call_parameter_list_parentheses = false
+
+#Style - expression bodied member options
+
+#prefer block bodies for methods
+csharp_style_expression_bodied_methods = false:suggestion

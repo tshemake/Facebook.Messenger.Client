@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A8E8A15E-FD94-481F-BB8B-47D9C296F292}</ProjectGuid>
+    <ProjectGuid>{93778A38-C7B4-449A-89DF-61D976D8B779}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Facebook.Messenger.Client.Tests</RootNamespace>
@@ -100,12 +100,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook.Messenger.Client\Facebook.Messenger.Client.csproj">
-      <Project>{093CB4EE-9D73-4A8A-9AA5-613EB9C2277B}</Project>
+      <Project>{C22647E1-31D7-44C3-8CEB-214E01778B99}</Project>
       <Name>Facebook.Messenger.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Facebook.Messenger.Library\Facebook.Messenger.Library.csproj">
-      <Project>{7a03a770-695f-4707-a5d6-35dd6375292e}</Project>
-      <Name>Facebook.Messenger.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
