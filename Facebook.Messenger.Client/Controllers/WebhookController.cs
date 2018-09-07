@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using Newtonsoft.Json;
 
@@ -20,9 +19,10 @@ namespace Facebook.Messenger.Client.Controllers
         [HttpGet]
         public HttpResponseMessage Get()
         {
-            var mode = HttpContext.Current.Request.QueryString["hub.mode"];
-            var token = HttpContext.Current.Request.QueryString["hub.verify_token"];
-            var challenge = HttpContext.Current.Request.QueryString["hub.challenge"];
+            var queryStrings = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+            var mode = queryStrings["hub.mode"] ?? string.Empty;
+            var token = queryStrings["hub.verify_token"] ?? string.Empty;
+            var challenge = queryStrings["hub.challenge"] ?? string.Empty;
 
             if (mode != "subscribe" || token != VERIFY_TOKEN) {
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
