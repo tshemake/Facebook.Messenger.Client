@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
@@ -16,6 +17,6 @@ namespace Facebook.Messenger.Library.Core.Objects
         [JsonProperty(PropertyName = "timestamp")]
         public long Timestamp { get; set; }
         [JsonProperty(PropertyName = "message")]
-        public Message Message { get; set; }
+        public JObject Message { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,6 +21,8 @@ namespace Facebook.Messenger.Client.Controllers
         public static readonly string PAGE_ACCESS_TOKEN = Environment.GetEnvironmentVariable("PAGE_ACCESS_TOKEN");
         public static readonly string VERIFY_TOKEN = Environment.GetEnvironmentVariable("VERIFY_TOKEN");
 
+        private const string GraphApiUrl = "https://graph.facebook.com";
+
         // GET api/<controller>
         [HttpGet]
         public HttpResponseMessage Get()
@@ -37,24 +40,18 @@ namespace Facebook.Messenger.Client.Controllers
             };
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<controller>
-        public async Task<HttpResponseMessage> Post(Event @event)
+        public async Task<HttpResponseMessage> Post()
         {
-            if (!ModelState.IsValid) {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
-            }
             try {
-                if (@event.Entity.Equals("page")) {
-                    foreach (var pageEntry in @event.Entries) {
+                Event webhookEvent;
+                var body = await Request.Content.ReadAsStringAsync();
+                webhookEvent = JsonConvert.DeserializeObject<Event>(body);
+
+                if (webhookEvent.Entity.Equals("page")) {
+                    foreach (var pageEntry in webhookEvent.Entries) {
                         var pageId = pageEntry.Id;
                         var timeOfEvent = pageEntry.Time;
-
                         foreach (var message in pageEntry.Messages) {
                             if (message.Message != null) {
                                 await ReceivedMessage(message);
@@ -62,12 +59,15 @@ namespace Facebook.Messenger.Client.Controllers
                         }
                     }
                 }
+                else {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                }
             }
             catch (Exception) {
-                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
         }
 
         private async Task ReceivedMessage(Messaging messaging)
@@ -75,20 +75,16 @@ namespace Facebook.Messenger.Client.Controllers
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
-            var message = messaging.Message;
+            var message = messaging.Message.ToObject<Message>();
 
-            var messageId = message.Mid;
-            var messageText = message.Text;
-
-            if (!string.IsNullOrWhiteSpace(messageText)) {
-                await SendTextMessage(senderId, messageText);
+            if (!string.IsNullOrWhiteSpace(message.Text)) {
+                await SendTextMessage(senderId, message.Text);
             }
-
         }
 
         private async Task SendTextMessage(string senderId, string body)
         {
-            await "https://graph.facebook.com"
+            await GraphApiUrl
                 .AppendPathSegment("v2.6/me/messages")
                 .SetQueryParams(new { access_token = PAGE_ACCESS_TOKEN })
                 .PostJsonAsync(new {
@@ -97,7 +93,7 @@ namespace Facebook.Messenger.Client.Controllers
                         id = senderId
                     },
                     message = new {
-                        text = body
+                        text = $"You sent the message: {body}"
                     }
                 });
         }
