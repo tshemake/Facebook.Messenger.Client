@@ -6,7 +6,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Facebook.Messenger.Library.Core.Objects;
+using Facebook.Messenger.Library.Core.WebhookEvents;
+using Flurl;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Flurl.Http;
 
 namespace Facebook.Messenger.Client.Controllers
 {
@@ -39,9 +44,24 @@ namespace Facebook.Messenger.Client.Controllers
         }
 
         // POST api/<controller>
-        public async Task<HttpResponseMessage> Post()
+        public async Task<HttpResponseMessage> Post(Event @event)
         {
+            if (!ModelState.IsValid) {
+                return new HttpResponseMessage(HttpStatusCode.BadGateway);
+            }
             try {
+                if (@event.Entity.Equals("page")) {
+                    foreach (var pageEntry in @event.Entries) {
+                        var pageId = pageEntry.Id;
+                        var timeOfEvent = pageEntry.Time;
+
+                        foreach (var message in pageEntry.Messages) {
+                            if (message.Message != null) {
+                                await ReceivedMessage(message);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception) {
                 return new HttpResponseMessage(HttpStatusCode.BadGateway);
@@ -50,14 +70,36 @@ namespace Facebook.Messenger.Client.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        private async Task ReceivedMessage(Messaging messaging)
         {
+            var senderId = messaging.Sender.Id;
+            var recipientId = messaging.Recipient.Id;
+            var timeOfMessage = messaging.Timestamp;
+            var message = messaging.Message;
+
+            var messageId = message.Mid;
+            var messageText = message.Text;
+
+            if (!string.IsNullOrWhiteSpace(messageText)) {
+                await SendTextMessage(senderId, messageText);
+            }
+
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
+        private async Task SendTextMessage(string senderId, string body)
         {
+            await "https://graph.facebook.com"
+                .AppendPathSegment("v2.6/me/messages")
+                .SetQueryParams(new { access_token = PAGE_ACCESS_TOKEN })
+                .PostJsonAsync(new {
+                    messaging_type = "RESPONSE",
+                    recipient = new {
+                        id = senderId
+                    },
+                    message = new {
+                        text = body
+                    }
+                });
         }
     }
 }
