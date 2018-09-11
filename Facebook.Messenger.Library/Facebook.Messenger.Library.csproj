@@ -53,7 +53,7 @@
     <Compile Include="Agent.cs" />
     <Compile Include="Core\Objects\Entry.cs" />
     <Compile Include="Core\Objects\IMessage.cs" />
-    <Compile Include="Core\Objects\MessageRead - Копировать.cs" />
+    <Compile Include="Core\Objects\MessageDelivery.cs" />
     <Compile Include="Core\Objects\MessageRead.cs" />
     <Compile Include="Core\Objects\MessageResponse.cs" />
     <Compile Include="Core\Objects\Message.cs" />
