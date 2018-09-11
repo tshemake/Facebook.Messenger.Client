@@ -6,6 +6,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Facebook.Messenger.Client.Infrastructure;
+using Facebook.Messenger.Library;
 
 namespace Facebook.Messenger.Client
 {
@@ -18,6 +22,7 @@ namespace Facebook.Messenger.Client
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            IocContainer.Setup();
         }
     }
 }

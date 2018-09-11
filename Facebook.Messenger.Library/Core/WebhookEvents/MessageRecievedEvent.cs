@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class Response<T> where T : IMessage
+    public class MessageRecievedEvent<T> where T : IMessage
     {
         [JsonProperty(PropertyName = "messaging_type")]
         public string MessageType { get; set; }

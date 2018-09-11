@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
 using Facebook.Messenger.Library.Core.WebhookEvents;
 using Flurl;
@@ -22,6 +23,13 @@ namespace Facebook.Messenger.Client.Controllers
         public static readonly string VERIFY_TOKEN = Environment.GetEnvironmentVariable("VERIFY_TOKEN");
 
         private const string GraphApiUrl = "https://graph.facebook.com";
+
+        private Agent _service;
+
+        public WebhookController(Agent agent)
+        {
+            _service = agent;
+        }
 
         // GET api/<controller>
         [HttpGet]
@@ -76,7 +84,7 @@ namespace Facebook.Messenger.Client.Controllers
             var message = messaging.Message.ToObject<MessageResponse>();
 
             if (!string.IsNullOrWhiteSpace(message.Text)) {
-                await SendTextMessage(new Response<MessageResponse> {
+                await SendTextMessage(new MessageRecievedEvent<MessageResponse> {
                     MessageType = "RESPONSE",
                     Recipient = new Recipient
                     {
@@ -87,12 +95,9 @@ namespace Facebook.Messenger.Client.Controllers
             }
         }
 
-        private async Task SendTextMessage(Response<MessageResponse> message)
+        private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
         {
-            await GraphApiUrl
-                .AppendPathSegment("v2.6/me/messages")
-                .SetQueryParams(new { access_token = PAGE_ACCESS_TOKEN })
-                .PostJsonAsync(message);
+            await _service.SendTextMessageAsync(message);
         }
     }
 }

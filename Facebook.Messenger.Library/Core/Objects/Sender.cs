@@ -10,7 +10,7 @@ namespace Facebook.Messenger.Library.Core.Objects
     public class Sender
     {
         /// <summary>
-        /// Идентификатор PSID пользователя, с которым связано событие Response.
+        /// Идентификатор PSID пользователя, с которым связано событие MessageRecievedEvent.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
