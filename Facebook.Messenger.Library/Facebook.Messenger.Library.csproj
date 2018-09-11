@@ -59,6 +59,7 @@
     <Compile Include="Core\Objects\QuickReply.cs" />
     <Compile Include="Core\Objects\Recipient.cs" />
     <Compile Include="Core\Objects\Sender.cs" />
+    <Compile Include="Core\Objects\Serializable.cs" />
     <Compile Include="Core\WebhookEvents\MessageRecievedEvent.cs" />
     <Compile Include="Core\WebhookEvents\Event.cs" />
     <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />

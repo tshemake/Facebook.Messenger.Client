@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class Sender
+    public class Sender : Serializable
     {
         /// <summary>
         /// Идентификатор PSID пользователя, с которым связано событие MessageRecievedEvent.

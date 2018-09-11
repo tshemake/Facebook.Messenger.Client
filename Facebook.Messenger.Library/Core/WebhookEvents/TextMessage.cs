@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.WebhookEvents
 {
-    public class TextMessage
+    public class TextMessage : Serializable
     {
         [JsonProperty(PropertyName = "sender")]
         public Sender Sender { get; set; }

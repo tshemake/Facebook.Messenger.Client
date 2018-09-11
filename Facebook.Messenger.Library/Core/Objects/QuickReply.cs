@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class QuickReply
+    public class QuickReply : Serializable
     {
         /// <summary>
         /// Настраиваемые данные, которые предоставляет приложение.

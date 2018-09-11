@@ -14,21 +14,19 @@ using Flurl;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Flurl.Http;
+using NLog;
 
 namespace Facebook.Messenger.Client.Controllers
 {
     public class WebhookController : ApiController
     {
-        public static readonly string PAGE_ACCESS_TOKEN = Environment.GetEnvironmentVariable("PAGE_ACCESS_TOKEN");
-        public static readonly string VERIFY_TOKEN = Environment.GetEnvironmentVariable("VERIFY_TOKEN");
-
-        private const string GraphApiUrl = "https://graph.facebook.com";
-
+        private static ILogger _logger;
         private Agent _service;
 
-        public WebhookController(Agent agent)
+        public WebhookController(Agent agent, ILogger logger)
         {
             _service = agent;
+            _logger = logger;
         }
 
         // GET api/<controller>
@@ -38,9 +36,12 @@ namespace Facebook.Messenger.Client.Controllers
             [FromUri(Name = "hub.challenge")] string challenge,
             [FromUri(Name = "hub.mode")] string mode)
         {
-            if (mode != "subscribe" || token != VERIFY_TOKEN) {
+            if (mode != "subscribe" || token != Agent.VERIFY_TOKEN) {
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
+
+            _logger.Info($"WEBHOOK_VERIFIED");
+
             return new HttpResponseMessage(HttpStatusCode.OK) {
                 Content = new StringContent(challenge, Encoding.UTF8, "text/plain")
             };
@@ -83,11 +84,12 @@ namespace Facebook.Messenger.Client.Controllers
             var timeOfMessage = messaging.Timestamp;
             var message = messaging.Message.ToObject<MessageResponse>();
 
+            _logger.Info($"Sender PSID: {senderId}");
+
             if (!string.IsNullOrWhiteSpace(message.Text)) {
                 await SendTextMessage(new MessageRecievedEvent<MessageResponse> {
                     MessageType = "RESPONSE",
-                    Recipient = new Recipient
-                    {
+                    Recipient = new Recipient {
                         Id = messaging.Sender.Id
                     },
                     Message = message
@@ -97,7 +99,13 @@ namespace Facebook.Messenger.Client.Controllers
 
         private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
         {
-            await _service.SendTextMessageAsync(message);
+            _logger.Info(message);
+
+            await _service.SendTextMessageAsync(message).ContinueWith(responseTask => {
+                _logger.Info(responseTask.IsFaulted
+                    ? $"Unable to send message: {responseTask.Exception?.InnerException.Message}"
+                    : "message sent!");
+            });
         }
     }
 }

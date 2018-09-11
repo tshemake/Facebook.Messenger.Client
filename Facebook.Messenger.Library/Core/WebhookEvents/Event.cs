@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.WebhookEvents
 {
-    public class Event
+    public class Event : Serializable
     {
         /// <summary>
         /// Значение будет page

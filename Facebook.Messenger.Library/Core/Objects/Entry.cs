@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class Entry
+    public class Entry : Serializable
     {
         /// <summary>
         /// ID Страницы

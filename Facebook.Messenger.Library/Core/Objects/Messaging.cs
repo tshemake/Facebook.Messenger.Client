@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class Messaging
+    public class Messaging : Serializable
     {
         [JsonProperty(PropertyName = "sender")]
         public Sender Sender { get; set; }

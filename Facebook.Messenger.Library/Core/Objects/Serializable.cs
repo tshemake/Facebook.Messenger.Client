@@ -7,9 +7,10 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class MessageResponse : Serializable, IMessage
+    public abstract class Serializable
     {
-        [JsonProperty(PropertyName = "text")]
-        public string Text { get; set; }
+        public string ToJson() => JsonConvert.SerializeObject(this);
+
+        public override string ToString() => ToJson();
     }
 }
