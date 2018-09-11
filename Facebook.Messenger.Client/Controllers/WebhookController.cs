@@ -25,13 +25,11 @@ namespace Facebook.Messenger.Client.Controllers
 
         // GET api/<controller>
         [HttpGet]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get(
+            [FromUri(Name = "hub.verify_token")] string token,
+            [FromUri(Name = "hub.challenge")] string challenge,
+            [FromUri(Name = "hub.mode")] string mode)
         {
-            var queryStrings = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
-            var mode = queryStrings["hub.mode"] ?? string.Empty;
-            var token = queryStrings["hub.verify_token"] ?? string.Empty;
-            var challenge = queryStrings["hub.challenge"] ?? string.Empty;
-
             if (mode != "subscribe" || token != VERIFY_TOKEN) {
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }

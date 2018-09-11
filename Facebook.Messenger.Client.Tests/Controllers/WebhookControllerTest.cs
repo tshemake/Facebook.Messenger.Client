@@ -31,7 +31,7 @@ namespace Facebook.Messenger.Client.Tests.Controllers
             };
 
             // Act
-            var response = controller.Get();
+            var response = controller.Get(VERIFY_TOKEN, challenge, "subscribe");
 
             // Assert
             string result = response.Content.ReadAsStringAsync().Result;
