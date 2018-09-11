@@ -18,5 +18,9 @@ namespace Facebook.Messenger.Library.Core.Objects
         public long Timestamp { get; set; }
         [JsonProperty(PropertyName = "message")]
         public JObject Message { get; set; }
+        [JsonProperty(PropertyName = "delivery")]
+        public MessageDelivery Delivery { get; set; }
+        [JsonProperty(PropertyName = "read")]
+        public MessageRead Read { get; set; }
     }
 }

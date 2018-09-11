@@ -63,6 +63,12 @@ namespace Facebook.Messenger.Client.Controllers
                             if (message.Message != null) {
                                 await ReceivedMessage(message);
                             }
+                            else if (message.Delivery != null) {
+                                _logger.Info($"{message.Delivery.Mids.Count} messages that were delivered");
+                            }
+                            else if (message.Read != null) {
+                                _logger.Info($"All messages that were sent before {message.Read.Watermark} this timestamp were read");
+                            }
                         }
                     }
                 }
