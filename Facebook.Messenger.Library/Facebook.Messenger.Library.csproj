@@ -51,12 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Objects\Entry.cs" />
+    <Compile Include="Core\Objects\IMessage.cs" />
+    <Compile Include="Core\Objects\MessageResponse.cs" />
     <Compile Include="Core\Objects\Message.cs" />
     <Compile Include="Core\Objects\Messaging.cs" />
     <Compile Include="Core\Objects\QuickReply.cs" />
     <Compile Include="Core\Objects\Recipient.cs" />
     <Compile Include="Core\Objects\Sender.cs" />
-    <Compile Include="Core\Objects\Webhook.cs" />
+    <Compile Include="Core\Objects\Response.cs" />
     <Compile Include="Core\WebhookEvents\Event.cs" />
     <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />
     <Compile Include="Core\WebhookEvents\TextMessage.cs" />

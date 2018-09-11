@@ -75,27 +75,26 @@ namespace Facebook.Messenger.Client.Controllers
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
-            var message = messaging.Message.ToObject<Message>();
+            var message = messaging.Message.ToObject<MessageResponse>();
 
             if (!string.IsNullOrWhiteSpace(message.Text)) {
-                await SendTextMessage(senderId, message.Text);
+                await SendTextMessage(new Response<MessageResponse> {
+                    MessageType = "RESPONSE",
+                    Recipient = new Recipient
+                    {
+                        Id = messaging.Sender.Id
+                    },
+                    Message = message
+                });
             }
         }
 
-        private async Task SendTextMessage(string senderId, string body)
+        private async Task SendTextMessage(Response<MessageResponse> message)
         {
             await GraphApiUrl
                 .AppendPathSegment("v2.6/me/messages")
                 .SetQueryParams(new { access_token = PAGE_ACCESS_TOKEN })
-                .PostJsonAsync(new {
-                    messaging_type = "RESPONSE",
-                    recipient = new {
-                        id = senderId
-                    },
-                    message = new {
-                        text = $"You sent the message: {body}"
-                    }
-                });
+                .PostJsonAsync(message);
         }
     }
 }

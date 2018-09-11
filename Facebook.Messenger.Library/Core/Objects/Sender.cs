@@ -10,7 +10,7 @@ namespace Facebook.Messenger.Library.Core.Objects
     public class Sender
     {
         /// <summary>
-        /// Идентификатор PSID пользователя, с которым связано событие Webhook.
+        /// Идентификатор PSID пользователя, с которым связано событие Response.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

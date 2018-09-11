@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
-    public class Message
+    public class Message : IMessage
     {
         [JsonProperty(PropertyName = "mid")]
         public string Mid { get; set; }
