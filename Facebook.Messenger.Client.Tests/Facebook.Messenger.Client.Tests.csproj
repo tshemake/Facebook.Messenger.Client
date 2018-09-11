@@ -108,6 +108,10 @@
       <Project>{C22647E1-31D7-44C3-8CEB-214E01778B99}</Project>
       <Name>Facebook.Messenger.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Facebook.Messenger.Library\Facebook.Messenger.Library.csproj">
+      <Project>{7A03A770-695F-4707-A5D6-35DD6375292E}</Project>
+      <Name>Facebook.Messenger.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

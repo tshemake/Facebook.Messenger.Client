@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Facebook.Messenger.Client;
 using Facebook.Messenger.Client.Controllers;
+using Facebook.Messenger.Library;
+using Facebook.Messenger.Library.Core.Objects;
 
 namespace Facebook.Messenger.Client.Tests.Controllers
 {
@@ -21,7 +24,7 @@ namespace Facebook.Messenger.Client.Tests.Controllers
         {
             // Arrange
             string challenge = "CHALLENGE_ACCEPTED";
-            WebhookController controller = new WebhookController
+            WebhookController controller = new WebhookController(new FacebookMessenger())
             {
                 Request = new HttpRequestMessage
                 {
@@ -36,6 +39,15 @@ namespace Facebook.Messenger.Client.Tests.Controllers
             // Assert
             string result = response.Content.ReadAsStringAsync().Result;
             Assert.AreEqual(challenge, result);
+        }
+    }
+
+    public class FacebookMessenger : Agent
+    {
+        public override Task SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message)
+        {
+            Console.WriteLine($"{message.Recipient.Id}: {message.Message.Text}");
+            return Task.FromResult<object>(null);
         }
     }
 }
