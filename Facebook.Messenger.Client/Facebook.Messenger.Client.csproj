@@ -189,6 +189,7 @@
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
     <Compile Include="Infrastructure\FacebookMessengerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\MessageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

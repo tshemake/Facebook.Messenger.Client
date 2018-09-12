@@ -9,7 +9,12 @@ namespace Facebook.Messenger.Library.Core.Objects
 {
     public abstract class Serializable
     {
-        public string ToJson() => JsonConvert.SerializeObject(this);
+        public string ToJson() => JsonConvert.SerializeObject(this,
+            Formatting.None,
+            new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
 
         public override string ToString() => ToJson();
     }

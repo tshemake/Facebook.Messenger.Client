@@ -14,7 +14,7 @@ namespace Facebook.Messenger.Library.Core.Objects
         [JsonProperty(PropertyName = "text")]
         public string Text { get; set; }
         [JsonProperty(PropertyName = "seq")]
-        public int? Seq { get; set; } = null;
+        public int? Seq { get; set; }
         [JsonProperty("quick_reply")]
         public QuickReply QuickReply { get; set; }
     }

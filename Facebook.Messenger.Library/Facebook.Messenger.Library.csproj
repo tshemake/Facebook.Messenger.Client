@@ -51,8 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Core\WebhookEvents\BroadcastMessageResponse.cs" />
+    <Compile Include="Core\WebhookEvents\BroadcastResponse.cs" />
+    <Compile Include="Core\WebhookEvents\BroadcastRequest.cs" />
     <Compile Include="Core\Objects\Entry.cs" />
     <Compile Include="Core\Objects\IMessage.cs" />
+    <Compile Include="Core\WebhookEvents\BroadcastMessageRequest.cs" />
     <Compile Include="Core\Objects\MessageDelivery.cs" />
     <Compile Include="Core\Objects\MessageRead.cs" />
     <Compile Include="Core\Objects\MessageResponse.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="Core\Objects\Recipient.cs" />
     <Compile Include="Core\Objects\Sender.cs" />
     <Compile Include="Core\Objects\Serializable.cs" />
+    <Compile Include="Core\Objects\Types.cs" />
     <Compile Include="Core\WebhookEvents\MessageRecievedEvent.cs" />
     <Compile Include="Core\WebhookEvents\Event.cs" />
     <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />

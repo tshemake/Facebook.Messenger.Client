@@ -9,8 +9,11 @@ namespace Facebook.Messenger.Library.Core.Objects
 {
     public class MessageRecievedEvent<T> : Serializable where T : IMessage
     {
+        /// <summary>
+        /// Тип отправляемого сообщения.
+        /// </summary>
         [JsonProperty(PropertyName = "messaging_type")]
-        public string MessageType { get; set; }
+        public string MessageType { get; set; } = Types.Messaging.RESPONSE;
         [JsonProperty(PropertyName = "recipient")]
         public Recipient Recipient { get; set; }
         [JsonProperty(PropertyName = "message")]

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Facebook.Messenger.Client.ViewModel;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
 using Facebook.Messenger.Library.Core.WebhookEvents;
@@ -83,6 +84,26 @@ namespace Facebook.Messenger.Client.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
         }
 
+        // POST api/<controller>
+        [Route("Api/Webhook/BroadcastMessages")]
+        public async Task<HttpResponseMessage> PostBroadcastMessages(MessageViewModel message)
+        {
+            try {
+                long messageCreativeId = await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
+                    Messages = new List<MessageViewModel> { message }
+                });
+                long broadcastId = await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
+                    MessageCreativeId = messageCreativeId
+                });
+            }
+            catch (Exception ex) {
+                _logger.Debug(ex.Message);
+                return Request.CreateResponse(HttpStatusCode.BadGateway);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
+        }
+
         private async Task ReceivedMessage(Messaging messaging)
         {
             var senderId = messaging.Sender.Id;
@@ -94,7 +115,6 @@ namespace Facebook.Messenger.Client.Controllers
 
             if (!string.IsNullOrWhiteSpace(message.Text)) {
                 await SendTextMessage(new MessageRecievedEvent<MessageResponse> {
-                    MessageType = "RESPONSE",
                     Recipient = new Recipient {
                         Id = messaging.Sender.Id
                     },
