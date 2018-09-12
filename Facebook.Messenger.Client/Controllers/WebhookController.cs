@@ -89,12 +89,13 @@ namespace Facebook.Messenger.Client.Controllers
         public async Task<HttpResponseMessage> PostBroadcastMessages(MessageViewModel message)
         {
             try {
-                long messageCreativeId = await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
+                await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
                     Messages = new List<MessageViewModel> { message }
-                });
-                long broadcastId = await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
-                    MessageCreativeId = messageCreativeId
-                });
+                }).ContinueWith(async messageCreativeId => {
+                    await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
+                        MessageCreativeId = messageCreativeId.Result
+                    });
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
             }
             catch (Exception ex) {
                 _logger.Debug(ex.Message);
