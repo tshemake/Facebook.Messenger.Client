@@ -58,18 +58,12 @@ namespace Facebook.Messenger.Client.Controllers
             try {
                 Event webhookEvent = await ConvertToEventItem(Request);
 
-                if (webhookEvent.Entity.Equals("page")) {
-                    foreach (var pageEntry in webhookEvent.Entries) {
-                        var pageId = pageEntry.Id;
-                        var timeOfEvent = pageEntry.Time;
-                        foreach (Messaging message in pageEntry.Messages) {
-                            await MessagingEntry.Match(message, ReceivedMessage, ReceivedMessageDelivery,
-                                ReceivedMessageRead);
-                        }
-                    }
-                }
-                else {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                switch (webhookEvent.Entity) {
+                    case Types.Topics.PAGE:
+                        await EventFeed(webhookEvent.Entries);
+                        break;
+                    default:
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
             }
             catch (Exception) {
@@ -86,13 +80,12 @@ namespace Facebook.Messenger.Client.Controllers
             await AsyncHelper.RedirectToThreadPool();
 
             try {
-                await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
+                var messageCreativeId = await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
                     Messages = new List<MessageViewModel> { message }
-                }).ContinueWith(async messageCreativeId => {
-                    await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
-                        MessageCreativeId = messageCreativeId.Result
-                    });
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                });
+                await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
+                    MessageCreativeId = messageCreativeId
+                });
             }
             catch (Exception ex) {
                 _logger.Debug(ex.Message);
@@ -155,6 +148,18 @@ namespace Facebook.Messenger.Client.Controllers
             await AsyncHelper.RedirectToThreadPool();
 
             return JsonConvert.DeserializeObject<Event>(await request.Content.ReadAsStringAsync());
+        }
+
+        private async Task EventFeed(ICollection<Entry> entries)
+        {
+            foreach (var pageEntry in entries) {
+                var pageId = pageEntry.Id;
+                var timeOfEvent = pageEntry.Time;
+                foreach (Messaging message in pageEntry.Messages) {
+                    await MessagingEntry.Match(message, ReceivedMessage, ReceivedMessageDelivery,
+                        ReceivedMessageRead);
+                }
+            }
         }
     }
 }

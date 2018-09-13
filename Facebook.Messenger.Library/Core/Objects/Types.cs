@@ -62,5 +62,11 @@ namespace Facebook.Messenger.Library.Core.Objects
             /// </summary>
             public const string NO_PUSH = "NO_PUSH";
         }
+
+        public static class Topics
+        {
+            public const string PAGE = "page";
+            public const string USER = "user";
+        }
     }
 }

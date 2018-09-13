@@ -11,10 +11,10 @@ namespace Facebook.Messenger.Library.Core.WebhookEvents
     public class Event : Serializable
     {
         /// <summary>
-        /// Значение будет page
+        /// The object's type
         /// </summary>
         [JsonProperty(PropertyName = "object")]
-        public string Entity { get; set; }
+        public string Entity { get; set; } = Types.Topics.PAGE;
 
         /// <summary>
         /// Массив, содержащий данные события

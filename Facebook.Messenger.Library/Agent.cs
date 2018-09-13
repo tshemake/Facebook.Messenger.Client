@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Facebook.Messenger.Library.Core.Objects;
@@ -20,7 +21,7 @@ namespace Facebook.Messenger.Library
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public abstract Task SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message);
+        public abstract Task<HttpResponseMessage> SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message);
 
         /// <summary>
         /// Оформление сообщения
