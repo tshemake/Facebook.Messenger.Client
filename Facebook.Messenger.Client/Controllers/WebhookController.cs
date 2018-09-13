@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using Facebook.Messenger.Client.Infrastructure;
 using Facebook.Messenger.Client.ViewModel;
@@ -52,10 +53,10 @@ namespace Facebook.Messenger.Client.Controllers
         // POST api/<controller>
         public async Task<HttpResponseMessage> Post()
         {
+            await AsyncHelper.RedirectToThreadPool();
+
             try {
-                Event webhookEvent;
-                var body = await Request.Content.ReadAsStringAsync();
-                webhookEvent = JsonConvert.DeserializeObject<Event>(body);
+                Event webhookEvent = await ConvertToEventItem(Request);
 
                 if (webhookEvent.Entity.Equals("page")) {
                     foreach (var pageEntry in webhookEvent.Entries) {
@@ -82,6 +83,8 @@ namespace Facebook.Messenger.Client.Controllers
         [Route("Api/Webhook/BroadcastMessages")]
         public async Task<HttpResponseMessage> PostBroadcastMessages(MessageViewModel message)
         {
+            await AsyncHelper.RedirectToThreadPool();
+
             try {
                 await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
                     Messages = new List<MessageViewModel> { message }
@@ -101,6 +104,8 @@ namespace Facebook.Messenger.Client.Controllers
 
         private async Task ReceivedMessage(Messaging messaging)
         {
+            await AsyncHelper.RedirectToThreadPool();
+
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
@@ -134,6 +139,8 @@ namespace Facebook.Messenger.Client.Controllers
 
         private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
         {
+            await AsyncHelper.RedirectToThreadPool();
+
             _logger.Info(message);
 
             await _service.SendTextMessageAsync(message).ContinueWith(responseTask => {
@@ -141,6 +148,13 @@ namespace Facebook.Messenger.Client.Controllers
                     ? $"Unable to send message: {responseTask.Exception?.InnerException.Message}"
                     : "message sent!");
             });
+        }
+
+        private static async Task<Event> ConvertToEventItem(HttpRequestMessage request)
+        {
+            await AsyncHelper.RedirectToThreadPool();
+
+            return JsonConvert.DeserializeObject<Event>(await request.Content.ReadAsStringAsync());
         }
     }
 }
