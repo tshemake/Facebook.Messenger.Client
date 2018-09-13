@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Facebook.Messenger.Client.Infrastructure;
 using Facebook.Messenger.Client.ViewModel;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
@@ -60,16 +61,9 @@ namespace Facebook.Messenger.Client.Controllers
                     foreach (var pageEntry in webhookEvent.Entries) {
                         var pageId = pageEntry.Id;
                         var timeOfEvent = pageEntry.Time;
-                        foreach (var message in pageEntry.Messages) {
-                            if (message.Message != null) {
-                                await ReceivedMessage(message);
-                            }
-                            else if (message.Delivery != null) {
-                                _logger.Info($"{message.Delivery.Mids.Count} messages that were delivered");
-                            }
-                            else if (message.Read != null) {
-                                _logger.Info($"All messages that were sent before {message.Read.Watermark} this timestamp were read");
-                            }
+                        foreach (Messaging message in pageEntry.Messages) {
+                            await MessagingEntry.Match(message, ReceivedMessage, ReceivedMessageDelivery,
+                                ReceivedMessageRead);
                         }
                     }
                 }
@@ -123,6 +117,20 @@ namespace Facebook.Messenger.Client.Controllers
                 });
             }
         }
+
+#pragma warning disable 1998
+        private async Task ReceivedMessageDelivery(MessageDelivery messageDelivery)
+        {
+            _logger.Info($"{messageDelivery.Mids.Count} messages that were delivered");
+        }
+#pragma warning restore 1998
+
+#pragma warning disable 1998
+        private async Task ReceivedMessageRead(MessageRead messageRead)
+        {
+            _logger.Info($"All messages that were sent before {messageRead.Watermark} this timestamp were read");
+        }
+#pragma warning restore 1998
 
         private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
         {

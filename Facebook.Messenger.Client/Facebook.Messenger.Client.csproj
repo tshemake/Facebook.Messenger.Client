@@ -185,6 +185,7 @@
     <Compile Include="Infrastructure\ControllersInstaller.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Infrastructure\DependencyScope.cs" />
+    <Compile Include="Infrastructure\MessagingEntry.cs" />
     <Compile Include="Infrastructure\IocContainer.cs" />
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
     <Compile Include="Infrastructure\FacebookMessengerService.cs" />
