@@ -10,8 +10,11 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Facebook.Messenger.Client;
 using Facebook.Messenger.Client.Controllers;
+using Facebook.Messenger.Client.Infrastructure.Events;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
+using NLog;
+using Facebook.Messenger.Library.Core.WebhookEvents;
 
 namespace Facebook.Messenger.Client.Tests.Controllers
 {
@@ -25,7 +28,7 @@ namespace Facebook.Messenger.Client.Tests.Controllers
         {
             // Arrange
             string challenge = "CHALLENGE_ACCEPTED";
-            WebhookController controller = new WebhookController(new FacebookMessenger())
+            WebhookController controller = new WebhookController(new FacebookMessenger(), LogManager.GetLogger("WebhookController"), new EventBus())
             {
                 Request = new HttpRequestMessage
                 {
@@ -46,10 +49,20 @@ namespace Facebook.Messenger.Client.Tests.Controllers
 
     public class FacebookMessenger : Agent
     {
-        public override Task SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message)
+        public override Task<long> MessageCreativesRequestAsync<T>(BroadcastRequest<T> message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<long> SendBroadcastMessagesAsync(BroadcastMessageRequest message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<HttpResponseMessage> SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message)
         {
             Console.WriteLine($"{message.Recipient.Id}: {message.Message.Text}");
-            return Task.FromResult<object>(null);
+            return null;
         }
     }
 }

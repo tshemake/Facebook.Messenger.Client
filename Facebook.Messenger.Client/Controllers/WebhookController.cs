@@ -6,17 +6,14 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using Facebook.Messenger.Client.Infrastructure;
+using Facebook.Messenger.Client.Infrastructure.Events;
 using Facebook.Messenger.Client.ViewModel;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
 using Facebook.Messenger.Library.Core.WebhookEvents;
-using Flurl;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Flurl.Http;
 using NLog;
 
 namespace Facebook.Messenger.Client.Controllers
@@ -25,11 +22,13 @@ namespace Facebook.Messenger.Client.Controllers
     {
         private static ILogger _logger;
         private Agent _service;
+        private IEventBus _eventBus;
 
-        public WebhookController(Agent agent, ILogger logger)
+        public WebhookController(Agent agent, ILogger logger, IEventBus eventBus)
         {
             _service = agent;
             _logger = logger;
+            _eventBus = eventBus;
         }
 
         // GET api/<controller>
@@ -74,7 +73,23 @@ namespace Facebook.Messenger.Client.Controllers
         }
 
         // POST api/<controller>
-        [Route("Api/Webhook/BroadcastMessages")]
+        [Route("Api/Webhook/Received")]
+        public async Task<HttpResponseMessage> PostReceivedMessages(MessageRecievedEvent<MessageResponse> message)
+        {
+            await AsyncHelper.RedirectToThreadPool();
+
+            try {
+                await SendTextMessage(message);
+            }
+            catch (Exception ex) {
+                _logger.Debug(ex.Message);
+                return Request.CreateResponse(HttpStatusCode.BadGateway);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
+        }
+
+        // POST api/<controller>
+        [Route("Api/Webhook/Broadcast")]
         public async Task<HttpResponseMessage> PostBroadcastMessages(MessageViewModel message)
         {
             await AsyncHelper.RedirectToThreadPool();
@@ -99,6 +114,7 @@ namespace Facebook.Messenger.Client.Controllers
         {
             await AsyncHelper.RedirectToThreadPool();
 
+            _eventBus.Publish(new IntegrationEvent<Messaging>(messaging));
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
@@ -119,6 +135,7 @@ namespace Facebook.Messenger.Client.Controllers
 #pragma warning disable 1998
         private async Task ReceivedMessageDelivery(MessageDelivery messageDelivery)
         {
+            _eventBus.Publish(new IntegrationEvent<MessageDelivery>(messageDelivery));
             _logger.Info($"{messageDelivery.Mids.Count} messages that were delivered");
         }
 #pragma warning restore 1998
@@ -126,6 +143,7 @@ namespace Facebook.Messenger.Client.Controllers
 #pragma warning disable 1998
         private async Task ReceivedMessageRead(MessageRead messageRead)
         {
+            _eventBus.Publish(new IntegrationEvent<MessageRead>(messageRead));
             _logger.Info($"All messages that were sent before {messageRead.Watermark} this timestamp were read");
         }
 #pragma warning restore 1998
