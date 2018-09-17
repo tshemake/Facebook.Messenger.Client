@@ -197,7 +197,6 @@
     <Compile Include="Infrastructure\Events\EventBus.cs" />
     <Compile Include="Infrastructure\Events\IEventBus.cs" />
     <Compile Include="Infrastructure\Events\IntegrationEvent.cs" />
-    <Compile Include="Infrastructure\IDynamicIntegrationEventHandler.cs" />
     <Compile Include="Infrastructure\MessagingEntry.cs" />
     <Compile Include="Infrastructure\IocContainer.cs" />
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
