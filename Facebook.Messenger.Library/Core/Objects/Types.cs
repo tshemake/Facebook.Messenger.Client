@@ -68,5 +68,13 @@ namespace Facebook.Messenger.Library.Core.Objects
             public const string PAGE = "page";
             public const string USER = "user";
         }
+
+        public static class Payload
+        {
+            public const string IMAGE = "image";
+            public const string AUDIO = "audio";
+            public const string VIDEO = "video";
+            public const string FILE = "file";
+        }
     }
 }

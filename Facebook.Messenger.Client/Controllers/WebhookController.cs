@@ -118,7 +118,8 @@ namespace Facebook.Messenger.Client.Controllers
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
-            var message = messaging.Message.ToObject<MessageResponse>();
+            //var message = messaging.Message.ToObject<MessageResponse>();
+            var message = messaging.Message;
 
             _logger.Info($"Sender PSID: {senderId}");
 
@@ -127,7 +128,9 @@ namespace Facebook.Messenger.Client.Controllers
                     Recipient = new Recipient {
                         Id = messaging.Sender.Id
                     },
-                    Message = message
+                    Message = new MessageResponse {
+                        Text = message.Text
+                    }
                 });
             }
         }

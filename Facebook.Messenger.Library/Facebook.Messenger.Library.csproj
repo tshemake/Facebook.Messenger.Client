@@ -51,6 +51,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Core\Converters\AttachmentConverter.cs" />
+    <Compile Include="Core\Objects\Attachment.cs" />
+    <Compile Include="Core\Objects\FileAttachment.cs" />
+    <Compile Include="Core\Objects\VideoAttachment.cs" />
+    <Compile Include="Core\Objects\AudioAttachment.cs" />
+    <Compile Include="Core\Objects\ImageAttachment.cs" />
+    <Compile Include="Core\Objects\MediaPayload.cs" />
     <Compile Include="Core\WebhookEvents\BroadcastMessageResponse.cs" />
     <Compile Include="Core\WebhookEvents\BroadcastResponse.cs" />
     <Compile Include="Core\WebhookEvents\BroadcastRequest.cs" />
