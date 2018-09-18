@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Facebook.Messenger.Library.Core.Objects.Payloads;
+using Newtonsoft.Json;
 
-namespace Facebook.Messenger.Library.Core.Objects
+namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class Attachment
     {
@@ -13,7 +14,7 @@ namespace Facebook.Messenger.Library.Core.Objects
         }
     }
 
-    public class Attachment<T> : Attachment where T : MediaPayload
+    public class Attachment<T> : Attachment where T : Payload
     {
         public Attachment(string type) : base(type)
         {

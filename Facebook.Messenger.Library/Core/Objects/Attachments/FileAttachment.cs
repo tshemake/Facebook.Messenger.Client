@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Facebook.Messenger.Library.Core.Objects.Payloads;
 
-namespace Facebook.Messenger.Library.Core.Objects
+namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class FileAttachment : Attachment<MediaPayload>
     {

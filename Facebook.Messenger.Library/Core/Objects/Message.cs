@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Facebook.Messenger.Library.Core.Converters;
+using Facebook.Messenger.Library.Core.Objects.Attachments;
+using Facebook.Messenger.Library.Core.Objects.Attachments.Converters;
 using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects

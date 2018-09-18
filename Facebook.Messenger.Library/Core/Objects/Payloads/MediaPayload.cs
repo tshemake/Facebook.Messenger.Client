@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Facebook.Messenger.Library.Core.Objects
+namespace Facebook.Messenger.Library.Core.Objects.Payloads
 {
-    public class MediaPayload
+    public class MediaPayload : Payload
     {
         public MediaPayload()
         {

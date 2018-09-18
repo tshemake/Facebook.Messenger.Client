@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Facebook.Messenger.Library.Core.Objects;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Facebook.Messenger.Library.Core.Converters
+namespace Facebook.Messenger.Library.Core.Objects.Attachments.Converters
 {
     public class AttachmentConverter : JsonConverter
     {
@@ -34,6 +33,27 @@ namespace Facebook.Messenger.Library.Core.Converters
                     break;
                 case Types.Payload.FILE:
                     result = new FileAttachment();
+                    break;
+                case Types.Payload.LOCATION:
+                    result = new LocationAttachment();
+                    break;
+                case Types.Payload.FALLBACK:
+                    result = new FallbackAttachment();
+                    break;
+                case Types.Payload.TEMPLATE:
+                    var templateType = (attachment["payload"]["template_type"] as JValue)?.Value.ToString();
+                    switch (templateType)
+                    {
+                        case Types.Template.GENERIC:
+                            result = new GenericTemplateAttachment();
+                            break;
+                        case Types.Template.BUTTON:
+                            result = new ButtonTemplateAttachment();
+                            break;
+                        case Types.Template.RECEIPT:
+                            result = new ReceiptTemplateAttachment();
+                            break;
+                    }
                     break;
             }
             serializer.Populate(attachment.CreateReader(), result);

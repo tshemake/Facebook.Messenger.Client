@@ -75,6 +75,16 @@ namespace Facebook.Messenger.Library.Core.Objects
             public const string AUDIO = "audio";
             public const string VIDEO = "video";
             public const string FILE = "file";
+            public const string LOCATION = "location";
+            public const string FALLBACK = "fallback";
+            public const string TEMPLATE = "template";
+        }
+
+        public static class Template
+        {
+            public const string GENERIC = "generic";
+            public const string BUTTON = "button";
+            public const string RECEIPT = "receipt";
         }
     }
 }
