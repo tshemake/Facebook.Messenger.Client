@@ -54,6 +54,11 @@ namespace Facebook.Messenger.Client.Tests.Controllers
             throw new NotImplementedException();
         }
 
+        public override Task<HttpResponseMessage> SendActionAsync(MessageRecievedEvent<IMessage> message)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Task<long> SendBroadcastMessagesAsync(BroadcastMessageRequest message)
         {
             throw new NotImplementedException();

@@ -24,6 +24,13 @@ namespace Facebook.Messenger.Library
         public abstract Task<HttpResponseMessage> SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message);
 
         /// <summary>
+        /// Отправка состояния сообщения, отображаемое для пользователя
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public abstract Task<HttpResponseMessage> SendActionAsync(MessageRecievedEvent<IMessage> message);
+
+        /// <summary>
         /// Оформление сообщения
         /// </summary>
         /// <typeparam name="T"></typeparam>

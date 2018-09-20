@@ -73,6 +73,39 @@ namespace Facebook.Messenger.Library.Core.Objects
             NO_PUSH
         }
 
+        /// <summary>
+        /// Состояние сообщения, отображаемое
+        /// для пользователя
+        /// </summary>
+        /// <remarks>
+        /// Не удается отправить с message. Необходимо
+        /// отправить как отдельный запрос.
+        /// </remarks>
+        /// <remarks>
+        /// При использовании sender_actionrecipient
+        /// должно быть единственным другим набором
+        /// свойств в запросе.
+        /// </remarks>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum SenderAction
+        {
+            /// <summary>
+            /// Показать пузырек ввода
+            /// </summary>
+            [JsonProperty("typing_on")]
+            TypingOn,
+            /// <summary>
+            /// Убрать пузырек ввода
+            /// </summary>
+            [JsonProperty("typing_off")]
+            TypingOff,
+            /// <summary>
+            /// Показать значок подтверждения
+            /// </summary>
+            [JsonProperty("mark_seen")]
+            MarkSeen
+        }
+
         public static class Topics
         {
             public const string PAGE = "page";

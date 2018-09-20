@@ -98,7 +98,6 @@
     <Compile Include="Core\WebhookEvents\Event.cs" />
     <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />
     <Compile Include="Core\WebhookEvents\Error.cs" />
-    <Compile Include="Core\WebhookEvents\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

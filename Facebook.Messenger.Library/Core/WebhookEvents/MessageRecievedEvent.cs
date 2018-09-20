@@ -16,9 +16,13 @@ namespace Facebook.Messenger.Library.Core.Objects
         public Types.Messaging MessageType { get; set; } = Types.Messaging.RESPONSE;
         [JsonProperty(PropertyName = "recipient")]
         public Recipient Recipient { get; set; }
-        [JsonProperty(PropertyName = "message")]
+        [JsonProperty(PropertyName = "message", NullValueHandling = NullValueHandling.Ignore)]
         public T Message { get; set; }
         [JsonProperty(PropertyName = "notification_type")]
         public Types.Notification NotificationType { get; set; } = Types.Notification.REGULAR;
+        [JsonProperty(PropertyName = "sender_action", NullValueHandling = NullValueHandling.Ignore)]
+        public Types.SenderAction? SenderAction { get; set; }
+        [JsonProperty(PropertyName = "tag", NullValueHandling = NullValueHandling.Ignore)]
+        public string Tag { get; set; }
     }
 }

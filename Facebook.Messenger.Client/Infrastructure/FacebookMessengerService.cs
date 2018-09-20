@@ -26,15 +26,23 @@ namespace Facebook.Messenger.Client.Infrastructure
                     3,
                     attempt => TimeSpan.FromMilliseconds(100 * Math.Pow(2, attempt)));
 
+        public override async Task<HttpResponseMessage> SendActionAsync(MessageRecievedEvent<IMessage> message)
+        {
+            await AsyncHelper.RedirectToThreadPool();
+
+            return await exponentialRetryPolicy.ExecuteAsync(() =>
+                DoSendMessageAsync(message));
+        }
+
         public override async Task<HttpResponseMessage> SendTextMessageAsync(MessageRecievedEvent<MessageResponse> message)
         {
             await AsyncHelper.RedirectToThreadPool();
 
             return await exponentialRetryPolicy.ExecuteAsync(() =>
-                DoSendTextMessageAsync(message));
+                DoSendMessageAsync(message));
         }
 
-        public async Task<HttpResponseMessage> DoSendTextMessageAsync(MessageRecievedEvent<MessageResponse> message)
+        public async Task<HttpResponseMessage> DoSendMessageAsync<T>(MessageRecievedEvent<T> message) where T : IMessage
         {
             await AsyncHelper.RedirectToThreadPool();
 
