@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -82,9 +83,10 @@ namespace Facebook.Messenger.Client.Infrastructure
 
         private static async Task ThrowOnTransientFailure(HttpResponseMessage response)
         {
-            if (((int)response.StatusCode) < 200 ||
-                ((int)response.StatusCode) > 499)
+            if (response.StatusCode < HttpStatusCode.OK ||
+                response.StatusCode >= HttpStatusCode.BadRequest)
                 throw new HttpResponseException(response);
+
             var result = await AsJObjectAsync(response);
             if (result != null) {
                 var error = CreateResultError(result);
