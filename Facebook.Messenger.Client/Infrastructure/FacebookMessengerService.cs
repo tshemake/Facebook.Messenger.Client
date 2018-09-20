@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Exceptions;
 using Facebook.Messenger.Library.Core.Objects;
@@ -83,7 +84,7 @@ namespace Facebook.Messenger.Client.Infrastructure
         {
             if (((int)response.StatusCode) < 200 ||
                 ((int)response.StatusCode) > 499)
-                throw new Exception(response.StatusCode.ToString());
+                throw new HttpResponseException(response);
             var result = await AsJObjectAsync(response);
             if (result != null) {
                 var error = CreateResultError(result);
