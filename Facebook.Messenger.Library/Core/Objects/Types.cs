@@ -13,7 +13,8 @@ namespace Facebook.Messenger.Library.Core.Objects
         /// <summary>
         /// Тип отправляемого сообщения
         /// </summary>
-        public static class Messaging
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum Messaging
         {
             /// <summary>
             /// Сообщение отправляется в ответ на другое сообщение.
@@ -26,21 +27,24 @@ namespace Facebook.Messenger.Library.Core.Objects
             /// запрашивает подтверждение резерва или обновление статуса,
             /// используйте этот тег в ответном сообщении.
             /// </remarks>
-            public const string RESPONSE = "RESPONSE";
+            [JsonProperty("RESPONSE")]
+            RESPONSE,
             /// <summary>
             /// Сообщение не является ответом. Такой тип может быть
             /// у рекламных и обычных сообщений, отправленных в
             /// стандартный 24-часовой период или в рамках правила
             /// "24 + 1".
             /// </summary>
-            public const string UPDATE = "UPDATE";
+            [JsonProperty("UPDATE")]
+            UPDATE,
             /// <summary>
             /// Сообщение не является рекламным и отправляется
             /// вне стандартного 24-часового периода с тегом
             /// сообщения. Сообщение должно использоваться только
             /// в ситуациях, которые подразумевает этот тег.
             /// </summary>
-            public const string MESSAGE_TAG = "MESSAGE_TAG";
+            [JsonProperty("MESSAGE_TAG")]
+            MESSAGE_TAG
         }
 
         /// <summary>
@@ -56,23 +60,24 @@ namespace Facebook.Messenger.Library.Core.Objects
             /// Звук/вибрация
             /// </summary>
             [JsonProperty("REGULAR")]
-            Regular,
+            REGULAR,
             /// <summary>
             /// Только уведомление на экране
             /// </summary>
             [JsonProperty("SILENT_PUSH")]
-            SilentPush,
+            SILENT_PUSH,
             /// <summary>
             /// Без уведомлений
             /// </summary>
             [JsonProperty("NO_PUSH")]
-            NoPush
+            NO_PUSH
         }
 
         public static class Topics
         {
             public const string PAGE = "page";
             public const string USER = "user";
+            public const string ERROR = "error";
         }
 
         public static class Payload

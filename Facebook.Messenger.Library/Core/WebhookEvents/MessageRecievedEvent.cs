@@ -13,12 +13,12 @@ namespace Facebook.Messenger.Library.Core.Objects
         /// Тип отправляемого сообщения.
         /// </summary>
         [JsonProperty(PropertyName = "messaging_type")]
-        public string MessageType { get; set; } = Types.Messaging.RESPONSE;
+        public Types.Messaging MessageType { get; set; } = Types.Messaging.RESPONSE;
         [JsonProperty(PropertyName = "recipient")]
         public Recipient Recipient { get; set; }
         [JsonProperty(PropertyName = "message")]
         public T Message { get; set; }
         [JsonProperty(PropertyName = "notification_type")]
-        public Types.Notification NotificationType { get; set; } = Types.Notification.Regular;
+        public Types.Notification NotificationType { get; set; } = Types.Notification.REGULAR;
     }
 }

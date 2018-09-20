@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agent.cs" />
+    <Compile Include="Core\Exceptions\FacebookException.cs" />
     <Compile Include="Core\Objects\Attachments\Converters\AttachmentConverter.cs" />
     <Compile Include="Core\Objects\Address.cs" />
     <Compile Include="Core\Objects\Adjustment.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Core\WebhookEvents\MessageRecievedEvent.cs" />
     <Compile Include="Core\WebhookEvents\Event.cs" />
     <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />
+    <Compile Include="Core\WebhookEvents\Error.cs" />
     <Compile Include="Core\WebhookEvents\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

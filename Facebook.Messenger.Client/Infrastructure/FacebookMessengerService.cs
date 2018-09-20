@@ -5,10 +5,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Facebook.Messenger.Library;
+using Facebook.Messenger.Library.Core.Exceptions;
 using Facebook.Messenger.Library.Core.Objects;
 using Facebook.Messenger.Library.Core.WebhookEvents;
 using Flurl;
 using Flurl.Http;
+using Newtonsoft.Json.Linq;
 using Polly;
 
 namespace Facebook.Messenger.Client.Infrastructure
@@ -39,7 +41,7 @@ namespace Facebook.Messenger.Client.Infrastructure
                 .SetQueryParams(new { access_token = PAGE_ACCESS_TOKEN })
                 .PostJsonAsync(message);
 
-            ThrowOnTransientFailure(response);
+            await ThrowOnTransientFailure(response);
             return response;
         }
 
@@ -69,11 +71,32 @@ namespace Facebook.Messenger.Client.Infrastructure
             return messageBroadcast.BroadcastId;
         }
 
-        private static void ThrowOnTransientFailure(HttpResponseMessage response)
+        private static Error CreateResultError(JObject value)
+        {
+            if (value.Property(Types.Topics.ERROR) == null) return null;
+            var error = (JObject)value.Property(Types.Topics.ERROR).Value;
+            var result = error.ToObject<Error>();
+            return result;
+        }
+
+        private static async Task ThrowOnTransientFailure(HttpResponseMessage response)
         {
             if (((int)response.StatusCode) < 200 ||
                 ((int)response.StatusCode) > 499)
                 throw new Exception(response.StatusCode.ToString());
+            var result = await AsJObjectAsync(response);
+            if (result != null) {
+                var error = CreateResultError(result);
+                if (error != null) {
+                    throw new FacebookException(error.Message, error.Type, error.Code, error.ErrorSubcode);
+                }
+            }
+        }
+
+        private static async Task<JObject> AsJObjectAsync(HttpResponseMessage response)
+        {
+            response.EnsureSuccessStatusCode();
+            return JObject.Parse(await response.Content.ReadAsStringAsync());
         }
     }
 }

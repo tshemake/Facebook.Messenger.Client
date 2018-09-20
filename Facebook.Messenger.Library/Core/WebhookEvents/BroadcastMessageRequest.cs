@@ -20,9 +20,9 @@ namespace Facebook.Messenger.Library.Core.WebhookEvents
         [JsonProperty(PropertyName = "message_creative_id")]
         public long MessageCreativeId { get; set; }
         [JsonProperty(PropertyName = "notification_type")]
-        public Types.Notification NotificationType { get; set; } = Types.Notification.Regular;
+        public Types.Notification NotificationType { get; set; } = Types.Notification.REGULAR;
         [JsonProperty(PropertyName = "messaging_type")]
-        public string MessagingType { get; set; } = Types.Messaging.MESSAGE_TAG;
+        public Types.Messaging MessagingType { get; set; } = Types.Messaging.MESSAGE_TAG;
         [JsonProperty(PropertyName = "tag")]
         public string Tag { get; set; } = "NON_PROMOTIONAL_SUBSCRIPTION";
     }
