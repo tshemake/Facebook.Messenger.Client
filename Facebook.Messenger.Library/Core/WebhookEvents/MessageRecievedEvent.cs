@@ -18,5 +18,7 @@ namespace Facebook.Messenger.Library.Core.Objects
         public Recipient Recipient { get; set; }
         [JsonProperty(PropertyName = "message")]
         public T Message { get; set; }
+        [JsonProperty(PropertyName = "notification_type")]
+        public Types.Notification NotificationType { get; set; } = Types.Notification.Regular;
     }
 }

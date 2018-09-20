@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Facebook.Messenger.Library.Core.Objects
 {
@@ -47,20 +49,24 @@ namespace Facebook.Messenger.Library.Core.Objects
         /// <remarks>
         /// По умолчанию используется REGULAR.
         /// </remarks>
-        public static class Notification
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum Notification
         {
             /// <summary>
             /// Звук/вибрация
             /// </summary>
-            public const string REGULAR = "REGULAR";
+            [JsonProperty("REGULAR")]
+            Regular,
             /// <summary>
             /// Только уведомление на экране
             /// </summary>
-            public const string SILENT_PUSH = "SILENT_PUSH";
+            [JsonProperty("SILENT_PUSH")]
+            SilentPush,
             /// <summary>
             /// Без уведомлений
             /// </summary>
-            public const string NO_PUSH = "NO_PUSH";
+            [JsonProperty("NO_PUSH")]
+            NoPush
         }
 
         public static class Topics
