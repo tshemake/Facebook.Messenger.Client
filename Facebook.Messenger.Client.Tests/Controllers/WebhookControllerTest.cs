@@ -32,7 +32,7 @@ namespace Facebook.Messenger.Client.Tests.Controllers
             {
                 Request = new HttpRequestMessage
                 {
-                    RequestUri = new Uri($"http://localhost:49964/api/webhook?hub.verify_token={VERIFY_TOKEN}&hub.challenge={challenge}&hub.mode=subscribe")
+                    RequestUri = new Uri($"http://localhost:44391/api/webhook?hub.verify_token={VERIFY_TOKEN}&hub.challenge={challenge}&hub.mode=subscribe")
                 },
                 Configuration = new HttpConfiguration()
             };

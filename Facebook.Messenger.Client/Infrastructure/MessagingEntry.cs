@@ -1,27 +1,28 @@
-﻿using System;
+﻿using Facebook.Messenger.Library.Core.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Facebook.Messenger.Library.Core.Objects;
-using Newtonsoft.Json.Linq;
 
 namespace Facebook.Messenger.Client.Infrastructure
 {
     public static class MessagingEntry
     {
         public static async Task Match(Messaging message,
-            Func<Messaging, Task> actionMessageMatch,
-            Func<MessageDelivery, Task> actionMessageDeliveryMatch,
-            Func<MessageRead, Task> actionMessageReadMatch)
+                                       Func<Messaging, Task> actionMessageMatch,
+                                       Func<MessageDelivery, Task> actionMessageDeliveryMatch,
+                                       Func<MessageRead, Task> actionMessageReadMatch)
         {
-            if (message.Message != null) {
+            if (message.Message != null)
+            {
                 await actionMessageMatch(message);
             }
-            else if (message.Delivery != null) {
+            else if (message.Delivery != null)
+            {
                 await actionMessageDeliveryMatch(message.Delivery);
             }
-            else if (message.Read != null) {
+            else if (message.Read != null)
+            {
                 await actionMessageReadMatch(message.Read);
             }
         }

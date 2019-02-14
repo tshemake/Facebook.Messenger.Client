@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Facebook.Messenger.Library.Core.Objects.Attachments;
-using Facebook.Messenger.Library.Core.Objects.Attachments.Converters;
 using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects
@@ -37,10 +36,5 @@ namespace Facebook.Messenger.Library.Core.Objects
         /// </summary>
         [JsonProperty("is_echo", NullValueHandling = NullValueHandling.Ignore)]
         public bool IsEcho { get; set; }
-        /// <summary>
-        /// Массив, содержащий данные вложения
-        /// </summary>
-        [JsonProperty("attachments", ItemConverterType = typeof(AttachmentConverter))]
-        public List<Attachment> Attachments { get; set; }
     }
 }

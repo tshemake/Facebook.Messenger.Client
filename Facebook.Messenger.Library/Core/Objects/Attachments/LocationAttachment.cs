@@ -10,7 +10,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class LocationAttachment : Attachment<LocationPayload>
     {
-        public LocationAttachment() : base(Types.Payload.LOCATION)
+        public LocationAttachment() : base(AttachmentType.Location)
         {
         }
 

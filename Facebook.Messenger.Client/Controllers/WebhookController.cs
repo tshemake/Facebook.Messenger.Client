@@ -1,129 +1,98 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Facebook.Messenger.Client.Infrastructure;
-using Facebook.Messenger.Client.Infrastructure.Events;
-using Facebook.Messenger.Client.ViewModel;
+using Facebook.Messenger.Client.Models.ViewModels;
 using Facebook.Messenger.Library;
 using Facebook.Messenger.Library.Core.Objects;
 using Facebook.Messenger.Library.Core.WebhookEvents;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using NLog;
 
 namespace Facebook.Messenger.Client.Controllers
 {
-    public class WebhookController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class WebhookController : ControllerBase
     {
-        private static ILogger _logger;
-        private Agent _service;
-        private IEventBus _eventBus;
+        private readonly ILogger<WebhookController> _logger;
 
-        public WebhookController(Agent agent, ILogger logger, IEventBus eventBus)
+        public WebhookController(ILogger<WebhookController> logger)
         {
-            _service = agent;
             _logger = logger;
-            _eventBus = eventBus;
         }
 
-        // GET api/<controller>
+        // GET api/values
         [HttpGet]
-        public HttpResponseMessage Get(
-            [FromUri(Name = "hub.verify_token")] string token,
-            [FromUri(Name = "hub.challenge")] string challenge,
-            [FromUri(Name = "hub.mode")] string mode)
+        public IActionResult Get(
+            [FromQuery(Name = "hub.verify_token")] string token,
+            [FromQuery(Name = "hub.challenge")] string challenge,
+            [FromQuery(Name = "hub.mode")] string mode)
         {
-            if (mode != "subscribe" || token != Agent.VERIFY_TOKEN) {
-                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            if (mode != "subscribe" || token != Agent.VERIFY_TOKEN)
+            {
+                return Unauthorized();
             }
 
-            _logger.Info($"WEBHOOK_VERIFIED");
+            _logger.LogInformation($"WEBHOOK_VERIFIED");
 
-            return new HttpResponseMessage(HttpStatusCode.OK) {
-                Content = new StringContent(challenge, Encoding.UTF8, "text/plain")
-            };
+            return Ok(challenge);
         }
 
-        // POST api/<controller>
-        public async Task<HttpResponseMessage> Post()
+        // POST api/values
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] string body)
         {
-            await AsyncHelper.RedirectToThreadPool();
+            try
+            {
+                Event webhookEvent = JsonConvert.DeserializeObject<Event>(body);
 
-            try {
-                Event webhookEvent = await ConvertToEventItem(Request);
-
-                switch (webhookEvent.Entity) {
+                switch (webhookEvent.Entity)
+                {
                     case Types.Topics.PAGE:
-                        await EventFeed(webhookEvent.Entries);
+                        await EventFeedAsync(webhookEvent.Entries);
                         break;
                     default:
-                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                        return NotFound();
                 }
             }
-            catch (Exception) {
-                return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
+            catch (Exception)
+            {
+                return Ok("EVENT_RECEIVED");
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
+            return Ok("EVENT_RECEIVED");
         }
 
-        // POST api/<controller>
-        [Route("Api/Webhook/Received")]
-        public async Task<HttpResponseMessage> PostReceivedMessages(MessageRecievedEvent<MessageResponse> message)
+        [Route("Received")]
+        public async Task<IActionResult> PostReceivedMessages(MessageRecievedEvent<MessageResponse> message)
         {
-            await AsyncHelper.RedirectToThreadPool();
-
-            try {
+            try
+            {
                 await SendTextMessage(message);
             }
-            catch (Exception ex) {
-                _logger.Debug(ex.Message);
-                return Request.CreateResponse(HttpStatusCode.BadGateway);
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex.Message);
+                return StatusCode(502);
             }
-            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
-        }
-
-        // POST api/<controller>
-        [Route("Api/Webhook/Broadcast")]
-        public async Task<HttpResponseMessage> PostBroadcastMessages(MessageViewModel message)
-        {
-            await AsyncHelper.RedirectToThreadPool();
-
-            try {
-                var messageCreativeId = await _service.MessageCreativesRequestAsync(new BroadcastRequest<MessageViewModel> {
-                    Messages = new List<MessageViewModel> { message }
-                });
-                await _service.SendBroadcastMessagesAsync(new BroadcastMessageRequest {
-                    MessageCreativeId = messageCreativeId
-                });
-            }
-            catch (Exception ex) {
-                _logger.Debug(ex.Message);
-                return Request.CreateResponse(HttpStatusCode.BadGateway);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, "EVENT_RECEIVED");
+            return Ok("EVENT_RECEIVED");
         }
 
         private async Task ReceivedMessage(Messaging messaging)
         {
-            await AsyncHelper.RedirectToThreadPool();
-
-            _eventBus.Publish(new IntegrationEvent<Messaging>(messaging));
             var senderId = messaging.Sender.Id;
             var recipientId = messaging.Recipient.Id;
             var timeOfMessage = messaging.Timestamp;
 
             var message = messaging.Message;
 
-            _logger.Info($"Sender PSID: {senderId}");
+            _logger.LogInformation($"Sender PSID: {senderId}");
 
-            if (!string.IsNullOrWhiteSpace(message.Text)) {
+            if (!string.IsNullOrWhiteSpace(message.Text))
+            {
                 await SendTextMessage(new MessageRecievedEvent<MessageResponse> {
                     Recipient = new Recipient {
                         Id = messaging.Sender.Id
@@ -135,48 +104,37 @@ namespace Facebook.Messenger.Client.Controllers
             }
         }
 
+        private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
+        {
+            //await _service.SendTextMessageAsync(message).ContinueWith(responseTask => {
+            //    _logger.Info(responseTask.IsFaulted
+            //                     ? $"Unable to send message: {responseTask.Exception?.InnerException.Message}"
+            //                     : "message sent!");
+            //});
+        }
+
 #pragma warning disable 1998
         private async Task ReceivedMessageDelivery(MessageDelivery messageDelivery)
         {
-            _eventBus.Publish(new IntegrationEvent<MessageDelivery>(messageDelivery));
-            _logger.Info($"{messageDelivery.Mids.Count} messages that were delivered");
+            _logger.LogInformation($"{messageDelivery.Mids.Count} messages that were delivered");
         }
 #pragma warning restore 1998
 
 #pragma warning disable 1998
         private async Task ReceivedMessageRead(MessageRead messageRead)
         {
-            _eventBus.Publish(new IntegrationEvent<MessageRead>(messageRead));
-            _logger.Info($"All messages that were sent before {messageRead.Watermark} this timestamp were read");
+            _logger.LogInformation($"All messages that were sent before {messageRead.Watermark} this timestamp were read");
         }
 #pragma warning restore 1998
 
-        private async Task SendTextMessage(MessageRecievedEvent<MessageResponse> message)
+        private async Task EventFeedAsync(ICollection<Entry> entries)
         {
-            await AsyncHelper.RedirectToThreadPool();
-
-            _logger.Info(message);
-
-            await _service.SendTextMessageAsync(message).ContinueWith(responseTask => {
-                _logger.Info(responseTask.IsFaulted
-                    ? $"Unable to send message: {responseTask.Exception?.InnerException.Message}"
-                    : "message sent!");
-            });
-        }
-
-        private static async Task<Event> ConvertToEventItem(HttpRequestMessage request)
-        {
-            await AsyncHelper.RedirectToThreadPool();
-
-            return JsonConvert.DeserializeObject<Event>(await request.Content.ReadAsStringAsync());
-        }
-
-        private async Task EventFeed(ICollection<Entry> entries)
-        {
-            foreach (var pageEntry in entries) {
+            foreach (var pageEntry in entries)
+            {
                 var pageId = pageEntry.Id;
                 var timeOfEvent = pageEntry.Time;
-                foreach (Messaging message in pageEntry.Messages) {
+                foreach (Messaging message in pageEntry.Messages)
+                {
                     await MessagingEntry.Match(message, ReceivedMessage, ReceivedMessageDelivery,
                         ReceivedMessageRead);
                 }

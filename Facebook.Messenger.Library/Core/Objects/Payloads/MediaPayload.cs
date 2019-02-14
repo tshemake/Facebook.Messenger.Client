@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects.Payloads
 {
-    public class MediaPayload : Payload
+    public class MediaPayload : IPayload
     {
         public MediaPayload()
         {

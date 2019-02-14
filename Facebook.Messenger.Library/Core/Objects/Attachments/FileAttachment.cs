@@ -9,7 +9,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class FileAttachment : Attachment<MediaPayload>
     {
-        public FileAttachment() : base(Types.Payload.FILE)
+        public FileAttachment() : base(AttachmentType.File)
         {
             Payload = new MediaPayload();
         }

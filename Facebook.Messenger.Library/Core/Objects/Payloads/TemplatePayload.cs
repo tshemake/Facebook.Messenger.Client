@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects.Payloads
 {
-    public class TemplatePayload : Payload
+    public class TemplatePayload : IPayload
     {
         public TemplatePayload(string templateType)
         {
@@ -16,5 +16,8 @@ namespace Facebook.Messenger.Library.Core.Objects.Payloads
 
         [JsonProperty("template_type", NullValueHandling = NullValueHandling.Ignore)]
         public string TemplateType { get; private set; }
+
+        [JsonProperty("sharable")]
+        public bool Sharable { get; set; } = true;
     }
 }

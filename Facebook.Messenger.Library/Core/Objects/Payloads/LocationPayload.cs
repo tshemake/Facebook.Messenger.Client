@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Messenger.Library.Core.Objects.Payloads
 {
-    public class LocationPayload : Payload
+    public class LocationPayload : IPayload
     {
         public LocationPayload()
         {

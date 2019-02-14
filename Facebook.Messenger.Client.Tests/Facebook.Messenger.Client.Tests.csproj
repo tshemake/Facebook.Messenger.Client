@@ -102,7 +102,6 @@
   <ItemGroup>
     <Compile Include="Controllers\WebhookControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -112,11 +111,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook.Messenger.Client\Facebook.Messenger.Client.csproj">
-      <Project>{C22647E1-31D7-44C3-8CEB-214E01778B99}</Project>
+      <Project>{f2e5da00-572f-42e7-adc5-e677b35a617f}</Project>
       <Name>Facebook.Messenger.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Facebook.Messenger.Library\Facebook.Messenger.Library.csproj">
-      <Project>{7A03A770-695F-4707-A5D6-35DD6375292E}</Project>
+      <Project>{fe13acdf-ebed-4181-b04e-939bff2abe71}</Project>
       <Name>Facebook.Messenger.Library</Name>
     </ProjectReference>
   </ItemGroup>

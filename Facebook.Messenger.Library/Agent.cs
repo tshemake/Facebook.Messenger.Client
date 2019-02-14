@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Facebook.Messenger.Library.Core.Objects;
+using Facebook.Messenger.Library.Core.WebhookEvents;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Facebook.Messenger.Library.Core.Objects;
-using Facebook.Messenger.Library.Core.WebhookEvents;
 
 namespace Facebook.Messenger.Library
 {

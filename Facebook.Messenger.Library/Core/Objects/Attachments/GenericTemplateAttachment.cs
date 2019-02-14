@@ -7,7 +7,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class GenericTemplateAttachment : Attachment<GenericTemplatePayload>
     {
-        public GenericTemplateAttachment() : base(Types.Template.GENERIC)
+        public GenericTemplateAttachment() : base(AttachmentType.Generic)
         {
         }
 

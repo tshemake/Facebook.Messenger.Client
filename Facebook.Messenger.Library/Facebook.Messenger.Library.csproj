@@ -1,108 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A03A770-695F-4707-A5D6-35DD6375292E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Facebook.Messenger.Library</RootNamespace>
-    <AssemblyName>Facebook.Messenger.Library</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Flurl, Version=2.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Flurl.2.8.0\lib\net40\Flurl.dll</HintPath>
-    </Reference>
-    <Reference Include="Flurl.Http, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Flurl.Http.2.4.0\lib\net45\Flurl.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Flurl" Version="2.8.0" />
+    <PackageReference Include="Flurl.Http" Version="2.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Polly" Version="6.1.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Agent.cs" />
-    <Compile Include="Core\Exceptions\FacebookException.cs" />
-    <Compile Include="Core\Objects\Attachments\Converters\AttachmentConverter.cs" />
-    <Compile Include="Core\Objects\Address.cs" />
-    <Compile Include="Core\Objects\Adjustment.cs" />
-    <Compile Include="Core\Objects\Attachments\Attachment.cs" />
-    <Compile Include="Core\Objects\Attachments\ButtonTemplateAttachment.cs" />
-    <Compile Include="Core\Objects\Attachments\GenericTemplateAttachment.cs" />
-    <Compile Include="Core\Objects\Attachments\ReceiptTemplateAttachment.cs" />
-    <Compile Include="Core\Objects\Button.cs" />
-    <Compile Include="Core\Objects\Coordinates.cs" />
-    <Compile Include="Core\Objects\DefaultAction.cs" />
-    <Compile Include="Core\Objects\Attachments\FallbackAttachment.cs" />
-    <Compile Include="Core\Objects\Attachments\FileAttachment.cs" />
-    <Compile Include="Core\Objects\GenericElement.cs" />
-    <Compile Include="Core\Objects\Attachments\LocationAttachment.cs" />
-    <Compile Include="Core\Objects\Payloads\ButtonTemplatePayload.cs" />
-    <Compile Include="Core\Objects\Payloads\GenericTemplatePayload.cs" />
-    <Compile Include="Core\Objects\Payloads\LocationPayload.cs" />
-    <Compile Include="Core\Objects\Payloads\Payload.cs" />
-    <Compile Include="Core\Objects\Payloads\ReceiptTemplatePayload.cs" />
-    <Compile Include="Core\Objects\Payloads\TemplatePayload.cs" />
-    <Compile Include="Core\Objects\ReceiptElement.cs" />
-    <Compile Include="Core\Objects\Summary.cs" />
-    <Compile Include="Core\Objects\Attachments\VideoAttachment.cs" />
-    <Compile Include="Core\Objects\Attachments\AudioAttachment.cs" />
-    <Compile Include="Core\Objects\Attachments\ImageAttachment.cs" />
-    <Compile Include="Core\Objects\Payloads\MediaPayload.cs" />
-    <Compile Include="Core\WebhookEvents\BroadcastMessageResponse.cs" />
-    <Compile Include="Core\WebhookEvents\BroadcastResponse.cs" />
-    <Compile Include="Core\WebhookEvents\BroadcastRequest.cs" />
-    <Compile Include="Core\Objects\Entry.cs" />
-    <Compile Include="Core\Objects\IMessage.cs" />
-    <Compile Include="Core\WebhookEvents\BroadcastMessageRequest.cs" />
-    <Compile Include="Core\Objects\MessageDelivery.cs" />
-    <Compile Include="Core\Objects\MessageRead.cs" />
-    <Compile Include="Core\Objects\MessageResponse.cs" />
-    <Compile Include="Core\Objects\Message.cs" />
-    <Compile Include="Core\Objects\Messaging.cs" />
-    <Compile Include="Core\Objects\QuickReply.cs" />
-    <Compile Include="Core\Objects\Recipient.cs" />
-    <Compile Include="Core\Objects\Sender.cs" />
-    <Compile Include="Core\Objects\Serializable.cs" />
-    <Compile Include="Core\Objects\Types.cs" />
-    <Compile Include="Core\WebhookEvents\MessageRecievedEvent.cs" />
-    <Compile Include="Core\WebhookEvents\Event.cs" />
-    <Compile Include="Core\WebhookEvents\MessageWithAttachment.cs" />
-    <Compile Include="Core\WebhookEvents\Error.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

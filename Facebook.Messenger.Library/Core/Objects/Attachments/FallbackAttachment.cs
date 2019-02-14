@@ -10,7 +10,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     class FallbackAttachment : Attachment<MediaPayload>
     {
-        public FallbackAttachment() : base(Types.Payload.FALLBACK)
+        public FallbackAttachment() : base(AttachmentType.Fallback)
         {
         }
 

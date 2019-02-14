@@ -7,7 +7,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class ButtonTemplateAttachment : Attachment<ButtonTemplatePayload>
     {
-        public ButtonTemplateAttachment() : base(Types.Template.BUTTON)
+        public ButtonTemplateAttachment() : base(AttachmentType.Button)
         {
 
         }

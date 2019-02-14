@@ -12,6 +12,9 @@ namespace Facebook.Messenger.Library.Core.Objects
         [JsonProperty("recipient_id")]
         public virtual string RecipientId { get; set; }
 
+        /// <summary>
+        /// Message Id.
+        /// </summary>
         [JsonProperty("message_id")]
         public virtual string MessageId { get; set; }
 

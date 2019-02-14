@@ -9,7 +9,7 @@ namespace Facebook.Messenger.Library.Core.Objects.Attachments
 {
     public class AudioAttachment : Attachment<MediaPayload>
     {
-        public AudioAttachment() : base(Types.Payload.AUDIO)
+        public AudioAttachment() : base(AttachmentType.Audio)
         {
             Payload = new MediaPayload();
         }
